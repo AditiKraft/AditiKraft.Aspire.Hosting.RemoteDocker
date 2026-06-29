@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/aspire/">
+    <Project Path="aspire/Sample.AppHost/Sample.AppHost.csproj" />
+    <Project Path="aspire/Sample.ServiceDefaults/Sample.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/Sample/">
+    <Project Path="Sample/Sample.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AditiKraft.Aspire.Hosting.RemoteDocker.csproj" />
+  </Folder>
+</Solution>

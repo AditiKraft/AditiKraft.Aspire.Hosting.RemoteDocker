@@ -1,0 +1,21 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.4.6">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>394070c4-097c-4221-ab13-b5152a4703cb</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.4.6" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sample\Sample.csproj" />
+    <ProjectReference Include="..\..\src\AditiKraft.Aspire.Hosting.RemoteDocker.csproj" IsAspireProjectResource="false" />
+  </ItemGroup>
+
+</Project>
