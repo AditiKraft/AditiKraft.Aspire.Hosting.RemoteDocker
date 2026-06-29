@@ -6,18 +6,38 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <IsAspireHostingPackage>true</IsAspireHostingPackage>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
     <PackageId>AditiKraft.Aspire.Hosting.RemoteDocker</PackageId>
-    <Version>0.0.1</Version>
-    <Authors>AditiKraft</Authors>
-    <Description>Aspire hosting extension for SSH port forwarding to remote Docker hosts.</Description>
+    <Title>AditiKraft Aspire Remote Docker</Title>
+    <Description>Aspire hosting extension that SSH-port-forwards to a remote Docker host, so containers running on a remote machine appear local. Image-agnostic — works with Postgres, SQL Server, Redis, or any container resource.</Description>
+    <Authors>Aditi Kraft Private Limited</Authors>
+    <Company>Aditi Kraft Private Limited</Company>
+    <Copyright>Copyright © 2026 Aditi Kraft Private Limited</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>aspire;docker;remote-docker;ssh;port-forwarding;ssh-tunnel;docker-host;postgres;sqlserver;redis;containers</PackageTags>
+    <RepositoryUrl>https://github.com/AditiKraft/AditiKraft.Aspire.Hosting.RemoteDocker</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/AditiKraft/AditiKraft.Aspire.Hosting.RemoteDocker</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="13.4.6" />
     <PackageReference Include="SSH.NET" Version="2025.1.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="buildTransitive\AditiKraft.Aspire.Hosting.RemoteDocker.props" Pack="true" PackagePath="buildTransitive\" />
-    
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
+
 </Project>
