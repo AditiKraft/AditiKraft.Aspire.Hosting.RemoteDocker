@@ -6,6 +6,8 @@ namespace AditiKraft.Aspire.Hosting.RemoteDocker;
 
 public static class RemoteDockerExtensions
 {
+    private const string DockerHostEnvVar = "DOCKER_HOST";
+
     public static RemoteDockerOptions AddRemoteDockerSshForwarding(
         this IDistributedApplicationBuilder builder,
         Action<RemoteDockerOptions>? configure = null)
@@ -103,14 +105,13 @@ public static class RemoteDockerExtensions
         return resourceBuilder;
     }
 
-    private const string DockerHostEnvVar = "DOCKER_HOST";
-
     private static class ConfigKeys
     {
-        private const string Section = "RemoteDocker";
         public const string DockerHost = $"{Section}:DockerHost";
         public const string SshUser = $"{Section}:SshUser";
         public const string SshKeyFile = $"{Section}:SshKeyFile";
         public const string SshPassword = $"{Section}:SshPassword";
+
+        private const string Section = "RemoteDocker";
     }
 }
