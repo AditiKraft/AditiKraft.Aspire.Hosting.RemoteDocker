@@ -65,6 +65,9 @@ artifacts/
 # Tye
 .tye/
 
+# NUKE
+.nuke/temp/
+
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
