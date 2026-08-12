@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="13.4.6" />
-    <PackageReference Include="SSH.NET" Version="2025.1.0" />
+    <PackageReference Include="SSH.NET" Version="2026.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
 
