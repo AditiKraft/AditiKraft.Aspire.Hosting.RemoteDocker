@@ -23,7 +23,7 @@ class Build : FalloutBuild
         SourceDirectory / "AditiKraft.Aspire.Hosting.RemoteDocker.csproj";
 
     [Parameter("NuGet API Key for publishing packages")] private readonly string NuGetPAT;
-    [Parameter("Package version (default: 0.0.1)")] private readonly string PackageVersion = "0.0.1";
+    [Parameter("Package version (default: 0.1.0)")] private readonly string PackageVersion = "0.1.0";
 
     private AbsolutePath SampleProjectPath =>
         AspireDirectory / "Sample.AppHost" / "Sample.AppHost.csproj";

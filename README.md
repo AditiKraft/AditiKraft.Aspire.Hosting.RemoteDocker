@@ -15,6 +15,13 @@ It is **image-agnostic** — `ForwardViaSsh` works on *any* container resource (
 
 When `DOCKER_HOST` is local (`npipe://`, `unix://`, `localhost`, or unset), all of the above is a **no-op** — Aspire behaves exactly as it normally would.
 
+## Requirements
+
+| Requirement | Version |
+|---|---|
+| .NET SDK | 10.x |
+| Aspire | 13.5+ |
+
 ## Installation
 
 Add a `ProjectReference` (in-repo) or `PackageReference` (published) to your AppHost project:
@@ -28,7 +35,7 @@ Add a `ProjectReference` (in-repo) or `PackageReference` (published) to your App
 >
 > **Project-reference caveat:** the Aspire AppHost SDK flattens an `IsAspireProjectResource="false"` project reference to a bare assembly reference and drops its transitive NuGet graph, so `SSH.NET` won't be copied to your AppHost output. Add it directly to the AppHost while using a project reference:
 > ```xml
-> <PackageReference Include="SSH.NET" Version="2025.1.0" />
+> <PackageReference Include="SSH.NET" Version="2026.0.0" />
 > ```
 > This is **not** needed when you consume the published NuGet package — `SSH.NET` flows in as a normal transitive dependency.
 
