@@ -1,11 +1,11 @@
 using System.Linq;
-using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Utilities.Collections;
+using Fallout.Common;
+using Fallout.Common.IO;
+using Fallout.Solutions;
+using Fallout.Common.Tools.DotNet;
+using Fallout.Common.Utilities.Collections;
 
-class Build : NukeBuild
+class Build : FalloutBuild
 {
     public static int Main() => Execute<Build>(x => x.Push);
 
@@ -23,7 +23,7 @@ class Build : NukeBuild
         SourceDirectory / "AditiKraft.Aspire.Hosting.RemoteDocker.csproj";
 
     [Parameter("NuGet API Key for publishing packages")] private readonly string NuGetPAT;
-    [Parameter("Package version (default: 0.0.1)")] private readonly string PackageVersion = "0.0.1";
+    [Parameter("Package version (default: 0.1.0)")] private readonly string PackageVersion = "0.1.0";
 
     private AbsolutePath SampleProjectPath =>
         AspireDirectory / "Sample.AppHost" / "Sample.AppHost.csproj";
