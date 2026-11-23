@@ -1,9 +1,9 @@
 using System.Linq;
 using Fallout.Common;
 using Fallout.Common.IO;
-using Fallout.Solutions;
 using Fallout.Common.Tools.DotNet;
 using Fallout.Common.Utilities.Collections;
+using Fallout.Solutions;
 
 class Build : FalloutBuild
 {
@@ -15,7 +15,6 @@ class Build : FalloutBuild
     [Solution] readonly Solution Solution;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath AspireDirectory => RootDirectory / "aspire";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath PackageOutputDirectory => ArtifactsDirectory / "Packages";
 
@@ -24,9 +23,6 @@ class Build : FalloutBuild
 
     [Parameter("NuGet API Key for publishing packages")] private readonly string NuGetPAT;
     [Parameter("Package version (default: 0.1.0)")] private readonly string PackageVersion = "0.1.0";
-
-    private AbsolutePath SampleProjectPath =>
-        AspireDirectory / "Sample.AppHost" / "Sample.AppHost.csproj";
 
     #region NuGet
 
@@ -53,7 +49,7 @@ class Build : FalloutBuild
         .Executes(() =>
         {
             DotNetTasks.DotNetBuild(s => s
-                .SetProjectFile(SampleProjectPath)
+                .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetProperty("Version", PackageVersion)
                 .SetProperty("AssemblyVersion", PackageVersion)

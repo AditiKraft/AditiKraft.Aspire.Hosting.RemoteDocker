@@ -44,7 +44,7 @@ IResourceBuilder<PostgresServerResource> databaseServer = builder.AddPostgres("p
 
 IResourceBuilder<PostgresDatabaseResource> database = databaseServer.AddDatabase("appDb");
 
-builder.AddProject<Projects.Sample>("sample")
+builder.AddDotnetProject("sample", "../../Sample/Sample.csproj")
     .WaitForStart(sqlServerDatabase)
     .WithReference(sqlServerDatabase);
 
