@@ -4,7 +4,7 @@ Aspire hosting extension that enables SSH port forwarding to a remote Docker hos
 
 ## What it does
 
-When `DOCKER_HOST` points to a remote Docker host (e.g. `ssh://user@remote-server:2375`), Aspire will run containers on that remote host. This package:
+When `DOCKER_HOST` points to a remote Docker host (e.g. `ssh://user@remote-server`), Aspire will run containers on that remote host. This package:
 
 1. Parses the `DOCKER_HOST` value to detect whether it's remote
 2. Opens an SSH tunnel to the remote host
@@ -19,51 +19,67 @@ When `DOCKER_HOST` is local (`npipe://`, `unix://`, `localhost`, or unset), all 
 
 | Requirement | Version |
 |---|---|
-| .NET SDK | 10.x |
-| Aspire | 13.5+ |
+| .NET SDK | 10.0 or later |
+| Aspire | 17.0.0 or later |
+
+Install the [Aspire CLI bundle](https://aspire.dev/get-started/install-cli/) before building or running the AppHost.
 
 ## Installation
 
-Add a `ProjectReference` (in-repo) or `PackageReference` (published) to your AppHost project:
+Add a `PackageReference` to the published package. To build from source with a `Microsoft.NET.Sdk` AppHost, use an ordinary `ProjectReference` as shown in the sample.
 
 ```xml
-<ProjectReference Include="..\AditiKraft.Aspire.Hosting.RemoteDocker\AditiKraft.Aspire.Hosting.RemoteDocker.csproj"
-                  IsAspireProjectResource="false" />
+<ProjectReference Include="..\..\src\AditiKraft.Aspire.Hosting.RemoteDocker.csproj" />
 ```
 
-> `IsAspireProjectResource="false"` is required so the Aspire AppHost SDK treats this as a regular library reference, not an Aspire resource.
->
-> **Project-reference caveat:** the Aspire AppHost SDK flattens an `IsAspireProjectResource="false"` project reference to a bare assembly reference and drops its transitive NuGet graph, so `SSH.NET` won't be copied to your AppHost output. Add it directly to the AppHost while using a project reference:
-> ```xml
-> <PackageReference Include="SSH.NET" Version="2026.0.0" />
-> ```
-> This is **not** needed when you consume the published NuGet package — `SSH.NET` flows in as a normal transitive dependency.
+Both reference types bring in `SSH.NET` transitively.
+
+If your AppHost still uses `Aspire.AppHost.Sdk`, use the published package or migrate the AppHost before using this project reference. [AppHost SDK migration guide](https://aspire.dev/integrations/dotnet/migrate-dotnet-project-resource/#remove-the-obsolete-apphost-sdk)
+
+## Run the sample
+
+Start Docker and set any missing database passwords from the repository root. Enter a strong SQL Server password and a nonempty PostgreSQL password at the prompts. When reusing a persistent database volume, keep that database's existing credentials. The sample defaults to the `postgres` user, which you can override with `Parameters:postgresUsername`.
+
+```bash
+aspire secret set 'Parameters:MSSQLSAPASSWORD' --environment Development
+aspire secret set 'Parameters:postgresPassword' --environment Development
+```
+
+For remote Docker, configure the SSH settings below before starting the sample. Run the sample from the repository root.
+
+```bash
+aspire run --launch-profile http
+```
 
 ## Configuration
 
-Put these under a `RemoteDocker` section in user secrets or `appsettings.json` on the AppHost project:
+Set these keys in the AppHost's Aspire secrets store or under `RemoteDocker` in `appsettings.json`.
 
 | Key                        | Required    | Description                                          |
 |----------------------------|-------------|------------------------------------------------------|
-| `RemoteDocker:DockerHost`  | No          | Docker host URL (e.g. `ssh://user@host:2375`). If local or unset, forwarding is disabled. An exported `DOCKER_HOST` env var takes precedence. |
+| `RemoteDocker:DockerHost`  | No          | Docker host URL (e.g. `ssh://user@host`). If local or unset, forwarding is disabled. An exported `DOCKER_HOST` env var takes precedence. |
 | `RemoteDocker:SshUser`     | When remote | SSH username for the remote Docker host.             |
 | `RemoteDocker:SshKeyFile`  | When remote | Path to SSH private key file.                        |
 | `RemoteDocker:SshPassword` | When remote | SSH password (alternative to key file).              |
 
-At least one of `SshKeyFile` or `SshPassword` must be configured when remote.
+At least one of `SshKeyFile` or `SshPassword` must be configured for the port forwarder. For a `ssh://` Docker host, configure Docker's own SSH authentication through your SSH client. [Docker SSH setup](https://docs.docker.com/engine/security/protect-access/#use-ssh-to-protect-the-docker-daemon-socket)
+
+Run these commands from the AppHost directory or, for this sample, from the repository root.
 
 ```bash
-dotnet user-secrets set "RemoteDocker:DockerHost" "ssh://deploy@my-remote-host:2375"
-dotnet user-secrets set "RemoteDocker:SshUser" "deploy"
-dotnet user-secrets set "RemoteDocker:SshKeyFile" "C:/Users/me/.ssh/id_rsa"
+aspire secret set 'RemoteDocker:DockerHost' 'ssh://deploy@my-remote-host'
+aspire secret set 'RemoteDocker:SshUser' 'deploy'
+aspire secret set 'RemoteDocker:SshKeyFile' "$HOME/.ssh/id_rsa"
 ```
 
-Or as a section in `appsettings.json` (keep real credentials in **user secrets**, not committed config):
+Aspire 17 defaults to `Development` for these commands. It imports existing .NET user secrets the first time it uses `Development` if that Aspire secrets file is absent. The AppHost keeps its existing `UserSecretsId`. Use `aspire secret set` for subsequent edits and `--environment <name>` to configure credentials for another environment. [Aspire secrets documentation](https://aspire.dev/reference/cli/commands/aspire-secret/#environment-specific-secrets)
+
+The equivalent `appsettings.json` section is shown below. Store real credentials in Aspire secrets.
 
 ```json
 {
   "RemoteDocker": {
-    "DockerHost": "ssh://user@remote-host:2375",
+    "DockerHost": "ssh://user@remote-host",
     "SshUser": "user",
     "SshKeyFile": "",
     "SshPassword": "<ssh-password-or-blank-when-using-a-key>"
